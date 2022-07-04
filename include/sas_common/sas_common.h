@@ -39,7 +39,7 @@ template<class T>
  */
 void get_ros_param(ros::NodeHandle& nh, const std::string& name, T& t, const bool& is_local_name=true)
 {
-    const std::string prefix = is_local_name?"":ros::this_node::getName();
+    const std::string prefix = is_local_name?ros::this_node::getName():"";
     if(!nh.getParam(prefix+name,t))
     {
         throw std::runtime_error(prefix + "::Error loading " + name);
