@@ -23,10 +23,23 @@
 # ################################################################*/
 #pragma once
 
+#include <eigen3/Eigen/Dense>
 #include <ros/ros.h>
+
+using namespace Eigen;
 
 namespace sas
 {
+
+VectorXd concatenate(const VectorXd& a, const VectorXd& b);
+VectorXd concatenate(const std::vector<VectorXd>& as);
+
+MatrixXd vstack(const MatrixXd& A, const MatrixXd& B);
+
+MatrixXd block_diag(const std::vector<MatrixXd>& As);
+
+std::vector<VectorXd> split(const VectorXd& a, const std::vector<int>& ns);
+
 
 template<class T>
 /**
