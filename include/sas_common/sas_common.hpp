@@ -49,31 +49,4 @@ void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& p
 
 void display_signal_handler_none_bug_info(std::shared_ptr<rclcpp::Node>& node);
 
-// [2023/04/26] Murilo M. Marinho
-// In ideal conditions, everything defined in the common namespace is supposed to allow us to have a static rclcpp::Node,
-// that is automatically managed with a corresponding spin(). (similar to the one I made for ROS 1)
-// However, because what I believe to be this bug here: https://github.com/ros2/rclcpp/issues/1766
-// we get a segfault on shutdown. Instead of further wasting my time on this, I'm wrapping the least possible amount
-// of rclcpp code in pybind11 so that my own bindings work, but that is not ideal given the additional complications in the Python code.
-// Commented out since it is not used right now, but left here as a reminder to myself that I already tried to make this work.
-/*
-namespace common
-{
-static std::thread ros2_spin_thread;
-static std::mutex node_mutex;
-std::shared_ptr<rclcpp::Node> get_static_node();
-
-struct SingletonNodeManager
-{
-    std::shared_ptr<rclcpp::Node> node_;
-
-    SingletonNodeManager(const std::shared_ptr<rclcpp::Node>& node);
-
-    ~SingletonNodeManager();
-};
-
-static std::unique_ptr<SingletonNodeManager> node_manager;
-}
-*/
-
 }
