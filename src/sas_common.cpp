@@ -37,6 +37,8 @@ void display_signal_handler_none_bug_info(std::shared_ptr<rclcpp::Node> &node)
     {
         //The [rclcpp] error is a known issue in Humble, possibly already fixed in rolling.
         //https://github.com/ros2/rclcpp/pull/2019
+        RCLCPP_WARN_STREAM_ONCE(node->get_logger(), " ");
+        RCLCPP_WARN_STREAM_ONCE(node->get_logger(), " ");
         RCLCPP_WARN_STREAM_ONCE(node->get_logger(), "::Ignore the [rclcpp] error below, it is a bug in ROS 2 Humble.");
     }
 }
