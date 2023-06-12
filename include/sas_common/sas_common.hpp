@@ -31,7 +31,7 @@ namespace sas
 
 template<typename T>
 /**
- * @brief get_ros_parameter a wrapper of Node->get_parameter to throw an exception of the parameter was not found.
+ * @brief get_ros_parameter a wrapper of Node->get_parameter to throw a descriptive exception if the parameter was not found.
  * @param node[in] the relevant rclcpp::Node.
  * @param parameter_name[in] a std::string with the parameter name.
  * @param t[out] the reference for the variable that will store the parameter.
@@ -78,18 +78,15 @@ std::string get_type_name(const std::vector<T>&)
 template<typename T>
 /**
  * @brief get_ros_parameter a wrapper of Node->get_parameter to throw an exception of the parameter was not found.
- * This is a specialization for std::vector<T>, to consider empty sequences.
- * @param node[in] the relevant rclcpp::Node.
- * @param parameter_name[in] a std::string with the parameter name.
- * @param v[out] the reference for the std::vector<T> that will store the parameter.
- * namespace.
- *
- *
- *  We have to address empty sequences which are not handled in ROS2
+ * This is a specialization for std::vector<T>, to consider empty sequences, because they are not handled in ROS2
  *   See:
  *   1. https://answers.ros.org/question/396556/what-is-best-practice-for-parameters-which-are-empty-lists-in-ros2/
  *   2. https://docs.ros2.org/foxy/api/rclpy/api/parameters.html
  *   3. https://design.ros2.org/articles/ros_parameters.html
+ *
+ * @param node[in] the relevant rclcpp::Node.
+ * @param parameter_name[in] a std::string with the parameter name.
+ * @param v[out] the reference for the std::vector<T> that will store the parameter.
  *
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, std::vector<T>& v)
