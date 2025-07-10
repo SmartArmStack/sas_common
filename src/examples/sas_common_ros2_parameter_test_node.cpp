@@ -103,6 +103,5 @@ int main(int argc, char** argv)
     }
 
 
-    sas::display_signal_handler_none_bug_info(node);
     return 0;
 }
