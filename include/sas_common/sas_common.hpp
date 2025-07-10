@@ -1,6 +1,6 @@
 #pragma once
 /*
-# Copyright (c) 2016-2023 Murilo Marques Marinho
+# Copyright (c) 2016-2025 Murilo Marques Marinho
 #
 #    This file is part of sas_common.
 #
@@ -21,7 +21,12 @@
 #
 #   Author: Murilo M. Marinho, email: murilomarinho@ieee.org
 #
-# ################################################################*/
+# ################################################################
+# 2025.07.10
+# - Removed display_signal_handler_none_bug_info as no longer needed in Jazzy
+# - Added get_ros_optional_parameter
+*/
+
 
 #include <type_traits>
 #include <rclcpp/rclcpp.hpp>
@@ -35,7 +40,6 @@ template<typename T>
  * @param node[in] the relevant rclcpp::Node.
  * @param parameter_name[in] a std::string with the parameter name.
  * @param t[out] the reference for the variable that will store the parameter.
- * namespace.
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t)
 {
@@ -45,6 +49,25 @@ void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& p
     if(!node->get_parameter(parameter_name,t))
     {
         throw std::runtime_error("::Error loading " + parameter_name);
+    }
+}
+
+template<typename T>
+/**
+ * @brief get_ros_optional_parameter a wrapper of Node->get_parameter with a default value that does not throw an exception if not found.
+ * @param node[in] the relevant rclcpp::Node.
+ * @param parameter_name[in] a std::string with the parameter name.
+ * @param t[out] the reference for the variable that will store the parameter.
+ * @param default_value[in] the default value in case it's not found.
+ */
+void get_ros_optional_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t, T& default_value)
+{
+    if(!node->has_parameter(parameter_name))
+        node->declare_parameter<T>(parameter_name);
+
+    if(!node->get_parameter(parameter_name,t))
+    {
+        t = default_value;
     }
 }
 
@@ -142,6 +165,6 @@ void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& p
     }
 }
 
-void display_signal_handler_none_bug_info(std::shared_ptr<rclcpp::Node>& node);
+void (std::shared_ptr<rclcpp::Node>& node);
 
 }
