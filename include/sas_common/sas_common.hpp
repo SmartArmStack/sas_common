@@ -165,6 +165,4 @@ void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& p
     }
 }
 
-void (std::shared_ptr<rclcpp::Node>& node);
-
 }
