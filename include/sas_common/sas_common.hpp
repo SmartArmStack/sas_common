@@ -63,7 +63,7 @@ template<typename T>
 void get_ros_optional_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t, const T& default_value)
 {
     if(!node->has_parameter(parameter_name))
-        node->declare_parameter<T>(parameter_name);
+        node->declare_parameter<T>(parameter_name, default_value);
 
     if(!node->get_parameter(parameter_name,t))
     {
