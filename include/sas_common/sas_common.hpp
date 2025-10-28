@@ -64,13 +64,7 @@ void get_ros_optional_parameter(std::shared_ptr<rclcpp::Node>& node, const std::
 {
     if(!node->has_parameter(parameter_name))
         node->declare_parameter<T>(parameter_name, default_value);
-
-    if(!node->get_parameter(parameter_name,t))
-    {
-        t = default_value;
-        RCLCPP_INFO_STREAM(node->get_logger(),
-                           "Parameter " << parameter_name << " not found. Using default value " << default_value);
-    }
+    node->get_parameter(parameter_name,t);
 }
 
 template<typename T>
