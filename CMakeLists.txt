@@ -5,17 +5,39 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+set(PYBIND11_FINDPYTHON ON) # Fix CMP0148 Warning. https://github.com/pybind/pybind11/issues/4785
 find_package(pybind11 REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(sas_conversions REQUIRED)
 
-##### CPP LIBRARY #####
+####################################
+# CPP Shared Library Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+# The most common use case is to merge everything you need to export
+# into the same shared library called ${PROJECT_NAME}.
 
-add_library(${PROJECT_NAME} INTERFACE
+
+add_library(${PROJECT_NAME}
+        src/sas_object_client.cpp
     )
+
+ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
+
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(rclcpp)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    -ldqrobotics
+    )
 
 install(
     DIRECTORY include/
@@ -30,8 +52,9 @@ install(
     RUNTIME DESTINATION bin
     INCLUDES DESTINATION include
     )
-
-##END## CPP LIBRARY #####
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Shared Library Block [END] #
+##################################
 
 ########## PYBIND11 Module ###############
 ament_python_install_package(${PROJECT_NAME})
@@ -53,29 +76,36 @@ install(TARGETS _${PROJECT_NAME}
 )
 ########## PYBIND11 Module ###############
 
-##### CPP BINARY #####
+############################
+# CPP Binary Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+# While we cant use blocks https://cmake.org/cmake/help/latest/command/block.html#command:block
+# we use set--unset
+set(RCLCPP_LOCAL_BINARY_NAME sas_common_ros2_parameter_test_node)
 
-add_executable(sas_common_ros2_parameter_test_node
+add_executable(${RCLCPP_LOCAL_BINARY_NAME}
    src/examples/sas_common_ros2_parameter_test_node.cpp
 )
 
-ament_target_dependencies(sas_common_ros2_parameter_test_node PUBLIC
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
     rclcpp)
 
-target_link_libraries(sas_common_ros2_parameter_test_node PUBLIC
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
     ${PROJECT_NAME}
     )
 
-target_include_directories(sas_common_ros2_parameter_test_node
-  PUBLIC
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
-install(TARGETS
-  sas_common_ros2_parameter_test_node
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
   DESTINATION lib/${PROJECT_NAME})
 
-##END## CPP BINARY #####
+unset(RCLCPP_LOCAL_BINARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Binary Block [END] #
+##########################
 
 ##### LAUNCH FILES #####
 
