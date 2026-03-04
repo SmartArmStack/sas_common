@@ -61,10 +61,11 @@ ament_python_install_package(${PROJECT_NAME})
 
 pybind11_add_module(_${PROJECT_NAME} SHARED
     src/sas_common_py.cpp)
+
 ament_target_dependencies(_${PROJECT_NAME} PUBLIC
     rclcpp)
 
-target_link_libraries(_${PROJECT_NAME} PRIVATE ${PROJECT_NAME})
+target_link_libraries(_${PROJECT_NAME} PRIVATE ${PROJECT_NAME} -ldqrobotics)
 
 target_include_directories(_${PROJECT_NAME}
   PUBLIC

@@ -24,7 +24,10 @@
 #include <pybind11/pybind11.h>
 #include <rclcpp/rclcpp.hpp>
 
+#include <sas_common/sas_object_client.hpp>
+
 namespace py = pybind11;
+using OC = sas::ObjectClient;
 
 PYBIND11_MODULE(_sas_common, m) {
 
@@ -34,5 +37,14 @@ PYBIND11_MODULE(_sas_common, m) {
 
     py::class_<rclcpp::Node,std::shared_ptr<rclcpp::Node>>(m, "rclcpp_Node")
             .def(py::init<const std::string&>());
+
+    py::class_<OC>(m, "ObjectClient")
+            .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
+                 py::arg("node"),
+                 py::arg("topic_prefix") = "GET_FROM_NODE")
+            .def("send_pose",&OC::send_pose)
+            .def("get_pose",&OC::get_pose)
+            .def("is_enabled",&OC::is_enabled,"Returns true if the ObjectClient is enabled.")
+            .def("get_topic_prefix",&OC::get_topic_prefix);
 
 }
