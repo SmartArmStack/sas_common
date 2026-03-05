@@ -1,9 +1,9 @@
 /*
-# Copyright (c) 2016-2022 Murilo Marques Marinodeo
+# Copyright (c) 2016-2026 Murilo Marques Marinodeo
 #
 #    This file is part of sas_common.
 #
-#    sas_robot_driver is free software: you can redistribute it and/or modify
+#    sas_common is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Lesser General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
     }
 
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
-    auto node = std::make_shared<rclcpp::Node>("sas_robot_driver_ros_composer_node");
+    auto node = std::make_shared<rclcpp::Node>("sas_common_ros2_parameter_test_node");
 
     try
     {

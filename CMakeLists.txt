@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(sas_common)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic -fPIC)
 endif()
 
 set(PYBIND11_FINDPYTHON ON) # Fix CMP0148 Warning. https://github.com/pybind/pybind11/issues/4785
@@ -102,6 +102,37 @@ target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
 
 install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
   DESTINATION lib/${PROJECT_NAME})
+
+unset(RCLCPP_LOCAL_BINARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Binary Block [END] #
+##########################
+
+############################
+# CPP Binary Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+# While we cant use blocks https://cmake.org/cmake/help/latest/command/block.html#command:block
+# we use set--unset
+set(RCLCPP_LOCAL_BINARY_NAME sas_object_test_node)
+
+add_executable(${RCLCPP_LOCAL_BINARY_NAME}
+        src/examples/sas_object_test_node.cpp
+)
+
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        rclcpp)
+
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        ${PROJECT_NAME}
+)
+
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
+        DESTINATION lib/${PROJECT_NAME})
 
 unset(RCLCPP_LOCAL_BINARY_NAME)
 # ^^^^^^^^^^^^^^^^^^^^^^ #

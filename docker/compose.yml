@@ -8,4 +8,5 @@ services:
       && ls .
       && colcon build
       && source install/setup.bash
-      && ros2 launch sas_common sas_common_ros2_parameter_test_launch.py"
+      && ros2 launch sas_common sas_common_ros2_parameter_test_launch.py
+      && ros2 run sas_common sas_object_test_node"
