@@ -46,6 +46,7 @@ int main(int argc, char** argv)
     try
     {
         auto object_client = sas::ObjectClient(node);
+        object_client.is_enabled();
     }
     catch (const std::exception& e)
     {
