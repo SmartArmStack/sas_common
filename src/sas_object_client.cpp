@@ -23,8 +23,7 @@
 # ################################################################
 # Contributors:
 #
-#   1. Juan Jose Quiroz Omana (juanjose.quirozomana@manchester.ac.uk)
-#      Added the Watchdog functionality.
+#   -
 #
 */
 
