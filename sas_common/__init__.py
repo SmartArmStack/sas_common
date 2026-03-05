@@ -1,5 +1,5 @@
 """
-# Copyright (c) 2012-2021 Murilo Marques Marinho
+# Copyright (c) 2012-2026 Murilo Marques Marinho
 #
 #    This file is part of sas_robot_driver.
 #
@@ -22,4 +22,4 @@
 #
 # ################################################################
 """
-from sas_common._sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown
+from sas_common._sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient

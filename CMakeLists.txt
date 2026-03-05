@@ -5,8 +5,21 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -fPIC)
 endif()
 
+#################################
+# pybind11 import block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvvvvvvv #
 set(PYBIND11_FINDPYTHON ON) # Fix CMP0148 Warning. https://github.com/pybind/pybind11/issues/4785
-find_package(pybind11 REQUIRED)
+include(FetchContent) #Use pybind11 v3.0 for compatibility with dqrobotics.
+FetchContent_Declare(
+  pybind11
+  GIT_REPOSITORY https://github.com/pybind/pybind11.git
+  GIT_TAG        v3.0
+)
+FetchContent_MakeAvailable(pybind11)
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^ #
+# pybind11 import block [END] #
+###############################
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -62,10 +75,7 @@ ament_python_install_package(${PROJECT_NAME})
 pybind11_add_module(_${PROJECT_NAME} SHARED
     src/sas_common_py.cpp)
 
-ament_target_dependencies(_${PROJECT_NAME} PUBLIC
-    rclcpp)
-
-target_link_libraries(_${PROJECT_NAME} PRIVATE ${PROJECT_NAME} -ldqrobotics)
+target_link_libraries(_${PROJECT_NAME} PRIVATE ${PROJECT_NAME})
 
 target_include_directories(_${PROJECT_NAME}
   PUBLIC
@@ -139,13 +149,29 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 # CPP Binary Block [END] #
 ##########################
 
-##### LAUNCH FILES #####
-
+########################
+# Launch Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvv #
+# According to https://github.com/SmartArmStack/sas_robot_driver/blob/ros2/CMakeLists.txt
 install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
+        launch
+        DESTINATION share/${PROJECT_NAME}/
 )
+# ^^^^^^^^^^^^^^^^^^ #
+# Launch Block [END] #
+######################
 
-##END## LAUNCH FILES #####
+#########################
+# Scripts Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+install(DIRECTORY
+        scripts/
+        FILE_PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+        DESTINATION lib/${PROJECT_NAME}
+)
+# ^^^^^^^^^^^^^^^^^^^ #
+# Scripts Block [END] #
+#######################
 
 ament_package()
