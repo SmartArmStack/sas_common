@@ -48,7 +48,7 @@ ObjectClient::ObjectClient(const std::shared_ptr<Node> &node,
     topic_prefix_(topic_prefix == "GET_FROM_NODE"? node->get_name() : topic_prefix),
     pose_(0)
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing ObjectClient with prefix " + topic_prefix);
+    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing ObjectClient with prefix " + topic_prefix_);
 
     publisher_pose_ = node->create_publisher<geometry_msgs::msg::PoseStamped>(topic_prefix + "/set/pose",1);
 
