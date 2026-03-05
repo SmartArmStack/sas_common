@@ -1,0 +1,4 @@
+[submodule "docker/pybind11"]
+	path = docker/pybind11
+	url = https://github.com/pybind/pybind11.git
+	branch = v3.0
