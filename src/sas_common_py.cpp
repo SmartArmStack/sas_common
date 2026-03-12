@@ -31,7 +31,7 @@ using OC = sas::ObjectClient;
 
 PYBIND11_MODULE(_sas_common, m) {
 
-    m.def("rclcpp_init", [](){rclcpp::init(0,nullptr);});
+    m.def("rclcpp_init", [](){rclcpp::init(0,nullptr,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);});
     m.def("rclcpp_shutdown", [](){rclcpp::shutdown();});
     m.def("rclcpp_spin_some", [](const rclcpp::Node::SharedPtr& node){rclcpp::spin_some(node);});
 
