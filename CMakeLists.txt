@@ -41,7 +41,7 @@ add_library(${PROJECT_NAME}
 #ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
 
 target_include_directories(${PROJECT_NAME}
-  PUBLIC
+  PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
@@ -51,6 +51,7 @@ ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
     -ldqrobotics
+    rclcpp::rclcpp
     )
 
 install(
@@ -100,12 +101,12 @@ add_executable(${RCLCPP_LOCAL_BINARY_NAME}
    src/examples/sas_common_ros2_parameter_test_node.cpp
 )
 
-target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PRIVATE
     ${PROJECT_NAME}
     rclcpp::rclcpp
     )
 
-target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
