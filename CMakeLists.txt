@@ -1,6 +1,11 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.20)
 
 project(sas_common)
+
+# Default to C++20
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 20)
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall -Wextra -Wpedantic -fPIC)
@@ -16,6 +21,7 @@ add_subdirectory(pybind11)
 ###############################
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sas_conversions REQUIRED)
@@ -32,7 +38,7 @@ add_library(${PROJECT_NAME}
         src/sas_object_client.cpp
     )
 
-ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
+#ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC
@@ -40,9 +46,10 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:include>)
 
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_dependencies(rclcpp geometry_msgs sas_conversions)
+#ament_export_dependencies(rclcpp geometry_msgs sas_conversions)
 
 target_link_libraries(
+    PUBLIC
     ${PROJECT_NAME}
     -ldqrobotics
     )
