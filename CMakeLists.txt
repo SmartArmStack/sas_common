@@ -56,6 +56,7 @@ target_link_libraries(${PROJECT_NAME}
     rclcpp::rclcpp
     geometry_msgs::geometry_msgs
     sas_core::sas_core
+    sas_conversions::sas_conversions
     )
 
 install(
