@@ -13,6 +13,7 @@
 
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
+  <depend>sas_core</depend>
   <depend>sas_conversions</depend>
 
   <export>
