@@ -52,6 +52,7 @@ target_link_libraries(${PROJECT_NAME}
     PUBLIC
     -ldqrobotics
     rclcpp::rclcpp
+    geometry_msgs::geometry_msgs
     )
 
 install(
