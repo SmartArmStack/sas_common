@@ -100,11 +100,9 @@ add_executable(${RCLCPP_LOCAL_BINARY_NAME}
    src/examples/sas_common_ros2_parameter_test_node.cpp
 )
 
-ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
-    rclcpp)
-
 target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
     ${PROJECT_NAME}
+    rclcpp::rclcpp
     )
 
 target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
@@ -131,11 +129,9 @@ add_executable(${RCLCPP_LOCAL_BINARY_NAME}
         src/examples/sas_object_test_node.cpp
 )
 
-ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
-        rclcpp)
-
 target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
         ${PROJECT_NAME}
+        rclcpp::rclcpp
 )
 
 target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
