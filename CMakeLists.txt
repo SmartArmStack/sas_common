@@ -53,6 +53,7 @@ target_link_libraries(${PROJECT_NAME}
     -ldqrobotics
     rclcpp::rclcpp
     geometry_msgs::geometry_msgs
+    sas_core::sas_core
     )
 
 install(
