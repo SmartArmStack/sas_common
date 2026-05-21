@@ -30,6 +30,7 @@ find_package(sas_conversions REQUIRED)
 
 add_library(${PROJECT_NAME}
         src/sas_object_client.cpp
+        src/sas_object_server.cpp
     )
 
 ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
