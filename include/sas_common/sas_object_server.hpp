@@ -50,7 +50,7 @@ private:
 
     Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr subscriber_pose_;
     Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr publisher_pose_;
-    DQ get_target_pose_;
+    DQ target_pose_;
 
     void _callback_target_pose(const geometry_msgs::msg::PoseStamped& msg);
 public:
