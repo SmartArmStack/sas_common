@@ -24,6 +24,8 @@
 #include <exception>
 #include <rclcpp/rclcpp.hpp>
 #include <sas_common/sas_object_client.hpp>
+#include <sas_common/sas_object_server.hpp>
+
 
 #include<signal.h>
 static std::atomic_bool kill_this_process(false);
@@ -47,6 +49,8 @@ int main(int argc, char** argv)
     {
         auto object_client = sas::ObjectClient(node);
         object_client.is_enabled();
+        auto object_server = sas::ObjectServer(node);
+        object_server.is_enabled();
     }
     catch (const std::exception& e)
     {
