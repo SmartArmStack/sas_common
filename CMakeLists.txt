@@ -18,6 +18,7 @@ add_subdirectory(pybind11)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(sas_conversions REQUIRED)
 
 ####################################
@@ -31,9 +32,10 @@ find_package(sas_conversions REQUIRED)
 add_library(${PROJECT_NAME}
         src/sas_object_client.cpp
         src/sas_object_server.cpp
+        src/sas_simulator_client.cpp
     )
 
-ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions)
+ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions std_srvs)
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC
@@ -41,7 +43,7 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:include>)
 
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_dependencies(rclcpp geometry_msgs sas_conversions)
+ament_export_dependencies(rclcpp geometry_msgs sas_conversions std_srvs)
 
 target_link_libraries(
     ${PROJECT_NAME}
