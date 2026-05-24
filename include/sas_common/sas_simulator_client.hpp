@@ -28,19 +28,16 @@
 
 #include <atomic>
 
-#include <dqrobotics/DQ.h>
-
 #include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <std_srvs/srv/trigger.hpp>
 #include <sas_core/sas_object.hpp>
 
 using namespace rclcpp;
-using namespace DQ_robotics;
 
 namespace sas
 {
 
-class ObjectClient: private sas::Object
+class SimulatorClient: private sas::Object
 {
 private:
     std::shared_ptr<Node> node_;
@@ -48,20 +45,18 @@ private:
     std::atomic_bool enabled_;
     std::string topic_prefix_;
 
-    Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr subscriber_pose_;
-    Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr publisher_pose_;
-    DQ pose_;
+    std::shared_ptr<Client<std_srvs::srv::Trigger>> service_client_start_simulation_;
+    std::shared_ptr<Client<std_srvs::srv::Trigger>> service_client_stop_simulation_;
 
-    void _callback_pose(const geometry_msgs::msg::PoseStamped& msg);
 public:
-    ObjectClient() = delete;
-    ObjectClient(const ObjectClient&) = delete;
+    SimulatorClient() = delete;
+    SimulatorClient(const SimulatorClient&) = delete;
 
-    ObjectClient(const std::shared_ptr<Node> &node,
+    SimulatorClient(const std::shared_ptr<Node> &node,
                  const std::string topic_prefix="GET_FROM_NODE");
 
-    void send_pose(const DQ& pose);
-    DQ get_pose() const;
+    bool start_simulation();
+    bool stop_simulation();
 
     bool is_enabled() const;
     std::string get_topic_prefix() const;

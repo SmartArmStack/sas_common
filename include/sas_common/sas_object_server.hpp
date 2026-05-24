@@ -28,7 +28,7 @@
 
 #include <atomic>
 
-#include<dqrobotics/DQ.h>
+#include <dqrobotics/DQ.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
