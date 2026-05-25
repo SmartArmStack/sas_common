@@ -63,20 +63,22 @@ SimulatorServer::SimulatorServer(const std::shared_ptr<Node> &node,
 
 void SimulatorServer::start_simulation_callback_ros_(
           const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response>)
+          std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
 {
     if(!is_enabled())
         return;
     start_simulation_callback_();
+    resp->success = true;
 }
 
 void SimulatorServer::stop_simulation_callback_ros_(
           const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response>)
+          std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
 {
     if(!is_enabled())
         return;
     stop_simulation_callback_();
+    resp->success = true;
 }
 
 void SimulatorServer::set_start_simulation_callback(const std::function<void()>& start_simulation_callback)
