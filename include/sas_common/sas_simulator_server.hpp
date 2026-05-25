@@ -66,8 +66,8 @@ public:
     SimulatorServer(const std::shared_ptr<Node> &node,
                     const std::string topic_prefix="GET_FROM_NODE");
 
-    //bool start_simulation();
-    //bool stop_simulation();
+    void set_start_simulation_callback(const std::function<void()>&);
+    void set_stop_simulation_callback(const std::function<void()>&);
 
     bool is_enabled() const;
     std::string get_topic_prefix() const;
