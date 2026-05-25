@@ -51,8 +51,8 @@ int main(int argc, char** argv)
     {
         auto simulator_client = sas::SimulatorClient(node);
         auto simulator_server = sas::SimulatorServer(node);
-        auto f1 = [](){};
-        auto f2 = [](){};
+        auto f1 = [](){std::cout << "Start simulation called" << std::endl;};
+        auto f2 = [](){std::cout << "Stop simulation called" << std::endl;};
         simulator_server.set_start_simulation_callback(f1);
         simulator_server.set_stop_simulation_callback(f2);
 
@@ -62,6 +62,8 @@ int main(int argc, char** argv)
         {
             clock.update_and_sleep();
         }
+        simulator_client.start_simulation();
+        simulator_client.stop_simulation();
 
     }
     catch (const std::exception& e)
