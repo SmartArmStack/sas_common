@@ -33,6 +33,7 @@ add_library(${PROJECT_NAME}
         src/sas_object_client.cpp
         src/sas_object_server.cpp
         src/sas_simulator_client.cpp
+        src/sas_simulator_server.cpp
     )
 
 ament_target_dependencies(${PROJECT_NAME} rclcpp geometry_msgs sas_conversions std_srvs)
@@ -94,7 +95,7 @@ install(TARGETS _${PROJECT_NAME}
 set(RCLCPP_LOCAL_BINARY_NAME sas_common_ros2_parameter_test_node)
 
 add_executable(${RCLCPP_LOCAL_BINARY_NAME}
-   src/examples/sas_common_ros2_parameter_test_node.cpp
+   src/examples/${RCLCPP_LOCAL_BINARY_NAME}.cpp
 )
 
 ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
@@ -125,7 +126,38 @@ unset(RCLCPP_LOCAL_BINARY_NAME)
 set(RCLCPP_LOCAL_BINARY_NAME sas_object_test_node)
 
 add_executable(${RCLCPP_LOCAL_BINARY_NAME}
-        src/examples/sas_object_test_node.cpp
+        src/examples/${RCLCPP_LOCAL_BINARY_NAME}.cpp
+)
+
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        rclcpp)
+
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        ${PROJECT_NAME}
+)
+
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>)
+
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
+        DESTINATION lib/${PROJECT_NAME})
+
+unset(RCLCPP_LOCAL_BINARY_NAME)
+# ^^^^^^^^^^^^^^^^^^^^^^ #
+# CPP Binary Block [END] #
+##########################
+
+############################
+# CPP Binary Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvvvvv #
+# https://ros2-tutorial.readthedocs.io/en/latest/
+# While we cant use blocks https://cmake.org/cmake/help/latest/command/block.html#command:block
+# we use set--unset
+set(RCLCPP_LOCAL_BINARY_NAME sas_simulator_test_node)
+
+add_executable(${RCLCPP_LOCAL_BINARY_NAME}
+        src/examples/${RCLCPP_LOCAL_BINARY_NAME}.cpp
 )
 
 ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
