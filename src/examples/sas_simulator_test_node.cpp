@@ -23,6 +23,7 @@
 # ################################################################*/
 #include <exception>
 #include <rclcpp/rclcpp.hpp>
+#include <sas_core/sas_clock.hpp>
 #include <sas_common/sas_simulator_client.hpp>
 #include <sas_common/sas_simulator_server.hpp>
 
@@ -44,13 +45,24 @@ int main(int argc, char** argv)
 
     rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_test_node");
+    auto clock = sas::Clock(0.001);
 
     try
     {
         auto simulator_client = sas::SimulatorClient(node);
-        simulator_client.is_enabled();
         auto simulator_server = sas::SimulatorServer(node);
-        simulator_server.is_enabled();
+        auto f1 = [](){};
+        auto f2 = [](){};
+        simulator_server.set_start_simulation_callback(f1);
+        simulator_server.set_stop_simulation_callback(f2);
+
+        clock.init();
+        while(!(simulator_client.is_enabled() &&
+                simulator_server.is_enabled()))
+        {
+            clock.update_and_sleep();
+        }
+
     }
     catch (const std::exception& e)
     {

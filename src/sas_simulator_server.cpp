@@ -79,6 +79,15 @@ void SimulatorServer::stop_simulation_callback_ros_(
     stop_simulation_callback_();
 }
 
+void SimulatorServer::set_start_simulation_callback(const std::function<void()>& start_simulation_callback)
+{
+    start_simulation_callback_ = start_simulation_callback;
+}
+void SimulatorServer::set_stop_simulation_callback(const std::function<void()>& stop_simulation_callback)
+{
+    stop_simulation_callback_ = stop_simulation_callback;
+}
+
 bool SimulatorServer::is_enabled() const
 {
     return !(start_simulation_callback_ == nullptr ||
