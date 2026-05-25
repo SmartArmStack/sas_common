@@ -41,8 +41,8 @@ SimulatorClient::SimulatorClient(const std::shared_ptr<Node> &node,
 {
     RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing SimulatorClient with prefix " + topic_prefix_);
 
-    service_client_start_simulation_ = node_->create_client<std_srvs::srv::Trigger>("start_simulation");
-    service_client_stop_simulation_ = node_->create_client<std_srvs::srv::Trigger>("stop_simulation");
+    service_client_start_simulation_ = node_->create_client<std_srvs::srv::Trigger>(topic_prefix_ + "/start_simulation");
+    service_client_stop_simulation_ = node_->create_client<std_srvs::srv::Trigger>(topic_prefix_ + "/stop_simulation");
 }
 
 bool SimulatorClient::start_simulation()
@@ -61,8 +61,8 @@ bool SimulatorClient::stop_simulation()
 
 bool SimulatorClient::is_enabled() const
 {
-    //TODO add check to see if clients are connected
-    return true;
+    return (service_client_start_simulation_->service_is_ready() &&
+           service_client_stop_simulation_->service_is_ready());
 }
 
 std::string SimulatorClient::get_topic_prefix() const
