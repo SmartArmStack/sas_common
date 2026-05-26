@@ -25,9 +25,11 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include <sas_common/sas_object_client.hpp>
+#include <sas_common/sas_simulator_client.hpp>
 
 namespace py = pybind11;
 using OC = sas::ObjectClient;
+using SC = sas::SimulatorClient;
 
 PYBIND11_MODULE(_sas_common, m) {
 
@@ -47,4 +49,12 @@ PYBIND11_MODULE(_sas_common, m) {
             .def("is_enabled",&OC::is_enabled,"Returns true if the ObjectClient is enabled.")
             .def("get_topic_prefix",&OC::get_topic_prefix);
 
+     py::class_<SC>(m, "SimulatorClient")
+            .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
+                 py::arg("node"),
+                 py::arg("topic_prefix") = "GET_FROM_NODE")
+            .def("start_simulation",&SC::start_simulation)
+            .def("stop_simulation",&SC::stop_simulation)
+            .def("is_enabled",&SC::is_enabled,"Returns true if the SimulatorClient is enabled.")
+            .def("get_topic_prefix",&SC::get_topic_prefix);
 }
