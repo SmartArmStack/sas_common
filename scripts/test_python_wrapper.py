@@ -24,9 +24,9 @@
 # #######################################################################################
 """
 from dqrobotics import *
-from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient
+from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient, SimulatorClient
 
-def main(args=None):
+def main():
     try:
         rclcpp_init()
         node = rclcpp_Node("sas_common_test_python_wrapper_node")
@@ -34,6 +34,8 @@ def main(args=None):
         print(oc.is_enabled())
         x = DQ([1])
         oc.send_pose(x)
+        sc = SimulatorClient(node, "test_topic")
+        print(sc.is_enabled())
         rclcpp_spin_some(node)
         rclcpp_shutdown()
     except KeyboardInterrupt:

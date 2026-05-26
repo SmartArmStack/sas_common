@@ -53,7 +53,7 @@ public:
     SimulatorClient(const SimulatorClient&) = delete;
 
     SimulatorClient(const std::shared_ptr<Node> &node,
-                 const std::string topic_prefix="GET_FROM_NODE");
+                    const std::string topic_prefix="GET_FROM_NODE");
 
     bool start_simulation();
     bool stop_simulation();
