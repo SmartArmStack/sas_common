@@ -37,6 +37,13 @@ using namespace rclcpp;
 namespace sas
 {
 
+/**
+ * @brief Client for controlling a simulator via ROS services.
+ *
+ * The SimulatorClient provides a lightweight interface to call start/stop
+ * simulation services (std_srvs::srv::Trigger) and to query configuration
+ * such as whether the client is enabled and the topic/service prefix.
+ */
 class SimulatorClient: private sas::Object
 {
 private:
@@ -52,13 +59,47 @@ public:
     SimulatorClient() = delete;
     SimulatorClient(const SimulatorClient&) = delete;
 
+    /**
+     * @brief Construct a new SimulatorClient
+     *
+     * @param node Shared pointer to the rclcpp::Node used for ROS communications.
+     * @param topic_prefix Topic/service prefix used to build service names. Defaults to "GET_FROM_NODE".
+     */
     SimulatorClient(const std::shared_ptr<Node> &node,
                     const std::string topic_prefix="GET_FROM_NODE");
 
+    /**
+     * @brief Call the start simulation service.
+     *
+     * Invokes the configured start service and returns true if the call
+     * succeeded and the service responded positively.
+     *
+     * @return true on successful start, false otherwise.
+     */
     bool start_simulation();
+
+    /**
+     * @brief Call the stop simulation service.
+     *
+     * Invokes the configured stop service and returns true if the call
+     * succeeded and the service responded positively.
+     *
+     * @return true on successful stop, false otherwise.
+     */
     bool stop_simulation();
 
+    /**
+     * @brief Query whether the client is enabled.
+     *
+     * @return true if enabled, false otherwise.
+     */
     bool is_enabled() const;
+
+    /**
+     * @brief Get the configured topic/service prefix.
+     *
+     * @return std::string The topic/service prefix used by this client.
+     */
     std::string get_topic_prefix() const;
 };
 
