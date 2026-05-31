@@ -1,7 +1,7 @@
 # sas_common
 
 > [!TIP]
-> Repository for this module: https://github.com/MarinhoLab/sas_common \
+> Repository for this module: https://github.com/SmartArmStack/sas_common \
 > More information about SmartArmStack is available in https://smartarmstack.github.io/.
 
 ## ROS 2 Nodes
