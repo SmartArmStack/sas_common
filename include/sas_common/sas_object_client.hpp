@@ -40,6 +40,15 @@ using namespace DQ_robotics;
 namespace sas
 {
 
+/**
+ * @brief Client wrapper for object pose.
+ *
+ * The ObjectClient connects to a ROS node to subscribe and publish
+ * geometry_msgs::msg::PoseStamped messages representing an object's pose.
+ * Internally the pose is stored using DQ_robotics::DQ. The class exposes
+ * simple methods to send and retrieve the pose as well as to query
+ * configuration such as the topic prefix and enabled state.
+ */
 class ObjectClient: private sas::Object
 {
 private:
@@ -57,13 +66,43 @@ public:
     ObjectClient() = delete;
     ObjectClient(const ObjectClient&) = delete;
 
+    /**
+     * @brief Construct a new ObjectClient
+     *
+     * @param node Shared pointer to the rclcpp::Node used for ROS communications.
+     * @param topic_prefix Topic prefix used for publisher/subscriber names. Defaults to "GET_FROM_NODE".
+     */
     ObjectClient(const std::shared_ptr<Node> &node,
                  const std::string topic_prefix="GET_FROM_NODE");
 
+    /**
+     * @brief Publish the provided pose to the configured topic.
+     *
+     * This will publish the given DQ pose using the internal publisher.
+     *
+     * @param pose The pose to send (DQ representation).
+     */
     void send_pose(const DQ& pose);
+
+    /**
+     * @brief Get the last received pose.
+     *
+     * @return DQ The last pose received via the subscription (or Exception if none received).
+     */
     DQ get_pose() const;
 
+    /**
+     * @brief Query whether the client is enabled.
+     *
+     * @return true if enabled, false otherwise.
+     */
     bool is_enabled() const;
+
+    /**
+     * @brief Get the configured topic prefix.
+     *
+     * @return std::string The topic prefix used by this client.
+     */
     std::string get_topic_prefix() const;
 };
 

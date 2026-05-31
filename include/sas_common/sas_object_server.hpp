@@ -40,6 +40,15 @@ using namespace DQ_robotics;
 namespace sas
 {
 
+/**
+ * @brief Server wrapper for object pose.
+ *
+ * The ObjectServer exposes a simple interface to receive and publish
+ * geometry_msgs::msg::PoseStamped messages representing target and current poses of an object.
+ * Internally the target pose is stored using DQ_robotics::DQ. The class provides
+ * methods to send the current pose, retrieve the target pose and query configuration
+ * such as the topic prefix and enabled state.
+ */
 class ObjectServer: private sas::Object
 {
 private:
@@ -57,13 +66,41 @@ public:
     ObjectServer() = delete;
     ObjectServer(const ObjectServer&) = delete;
 
+    /**
+     * @brief Construct a new ObjectServer
+     *
+     * @param node Shared pointer to the rclcpp::Node used for ROS communications.
+     * @param topic_prefix Topic prefix used for publisher/subscriber names. Defaults to "GET_FROM_NODE".
+     */
     ObjectServer(const std::shared_ptr<Node> &node,
                  const std::string topic_prefix="GET_FROM_NODE");
 
+    /**
+     * @brief Publish the provided pose to the configured topic.
+     *
+     * @param pose The pose to publish as a target (DQ representation).
+     */
     void send_pose(const DQ& pose);
+
+    /**
+     * @brief Get the currently stored target pose.
+     *
+     * @return DQ The target pose stored by the server.
+     */
     DQ get_target_pose() const;
 
+    /**
+     * @brief Query whether the server is enabled.
+     *
+     * @return true if enabled, false otherwise.
+     */
     bool is_enabled() const;
+
+    /**
+     * @brief Get the configured topic prefix.
+     *
+     * @return std::string The topic prefix used by this server.
+     */
     std::string get_topic_prefix() const;
 };
 
