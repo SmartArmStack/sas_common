@@ -87,7 +87,8 @@ public:
     /**
      * @brief Get the last received pose.
      *
-     * @return DQ The last pose received via the subscription (or Exception if none received).
+     * @return DQ The last pose received via the subscription.
+     * @throws std::runtime_error if no pose has been received (client uninitialized).
      */
     DQ get_pose() const;
 

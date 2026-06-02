@@ -23,10 +23,23 @@
 #
 # #######################################################################################
 """
+"""Test script for the sas_common Python bindings.
+
+This script demonstrates usage of the C++ bindings exposed via
+the sas_common Python package. It initializes rclcpp, creates a node and
+instantiates the ObjectClient and SimulatorClient wrappers.
+
+Run with: python3 test_python_wrapper.py
+"""
 from dqrobotics import *
 from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient, SimulatorClient
 
 def main():
+    """Run a basic smoke-test using the Python bindings.
+
+    The function initializes rclcpp, creates the node and clients, sends a
+    sample pose and performs a spin.
+    """
     try:
         rclcpp_init()
         node = rclcpp_Node("sas_common_test_python_wrapper_node")

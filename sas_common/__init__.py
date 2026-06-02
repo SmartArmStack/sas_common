@@ -21,5 +21,19 @@
 #   Author: Murilo M. Marinho, email: murilomarinho@ieee.org
 #
 # ################################################################
+
+Package entry for the sas_common Python bindings.
+
+This module re-exports the primary Python bindings provided by the
+compiled extension module :mod:`sas_common._sas_common` for convenience.
+
+Exports:
+- rclcpp_init: Initialize rclcpp
+- rclcpp_Node: Lightweight Node wrapper exposed from the C++ extension
+- rclcpp_spin_some: Spin the node briefly
+- rclcpp_shutdown: Shutdown rclcpp
+- ObjectClient, SimulatorClient: C++ client wrappers for object/simulator control
+
 """
+
 from sas_common._sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient, SimulatorClient
