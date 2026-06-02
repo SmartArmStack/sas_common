@@ -86,6 +86,7 @@ public:
      * @brief Get the currently stored target pose.
      *
      * @return DQ The target pose stored by the server.
+     * @throws std::runtime_error if no target pose has been received (server uninitialized).
      */
     DQ get_target_pose() const;
 

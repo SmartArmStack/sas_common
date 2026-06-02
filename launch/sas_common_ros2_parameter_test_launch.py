@@ -1,3 +1,10 @@
+"""Launch file used to run the ros2 parameter test node for sas_common.
+
+This launch description starts the `sas_common_ros2_parameter_test_node` with
+pre-configured parameters used to exercise the special EMPTY_LIST handling for
+vector parameters.
+"""
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 

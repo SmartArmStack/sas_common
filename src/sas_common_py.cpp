@@ -43,18 +43,26 @@ PYBIND11_MODULE(_sas_common, m) {
     py::class_<OC>(m, "ObjectClient")
             .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
                  py::arg("node"),
-                 py::arg("topic_prefix") = "GET_FROM_NODE")
-            .def("send_pose",&OC::send_pose)
-            .def("get_pose",&OC::get_pose)
+                 py::arg("topic_prefix") = "GET_FROM_NODE",
+                 "Construct an ObjectClient bound to the provided node and topic prefix.")
+            .def("send_pose",&OC::send_pose,
+                 "Publish the provided pose (DQ) to the configured topic.")
+            .def("get_pose",&OC::get_pose,
+                 "Return the last received pose (DQ). Raises RuntimeError if no pose has been received and the client is uninitialized.")
             .def("is_enabled",&OC::is_enabled,"Returns true if the ObjectClient is enabled.")
-            .def("get_topic_prefix",&OC::get_topic_prefix);
+            .def("get_topic_prefix",&OC::get_topic_prefix,
+                 "Return the topic prefix configured for this client.");
 
      py::class_<SC>(m, "SimulatorClient")
             .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
                  py::arg("node"),
-                 py::arg("topic_prefix") = "GET_FROM_NODE")
-            .def("start_simulation",&SC::start_simulation)
-            .def("stop_simulation",&SC::stop_simulation)
+                 py::arg("topic_prefix") = "GET_FROM_NODE",
+                 "Construct a SimulatorClient bound to the provided node and topic/service prefix.")
+            .def("start_simulation",&SC::start_simulation,
+                 "Call the start_simulation service; returns True on success.")
+            .def("stop_simulation",&SC::stop_simulation,
+                 "Call the stop_simulation service; returns True on success.")
             .def("is_enabled",&SC::is_enabled,"Returns true if the SimulatorClient is enabled.")
-            .def("get_topic_prefix",&SC::get_topic_prefix);
+            .def("get_topic_prefix",&SC::get_topic_prefix,
+                 "Return the topic/service prefix configured for this client.");
 }

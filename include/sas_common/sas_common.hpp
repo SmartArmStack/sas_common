@@ -40,6 +40,7 @@ template<typename T>
  * @param node[in] the relevant rclcpp::Node.
  * @param parameter_name[in] a std::string with the parameter name.
  * @param t[out] the reference for the variable that will store the parameter.
+ * @throws std::runtime_error if the parameter could not be retrieved from the node.
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t)
 {
@@ -106,6 +107,8 @@ template<typename T>
  * @param node[in] the relevant rclcpp::Node.
  * @param parameter_name[in] a std::string with the parameter name.
  * @param v[out] the reference for the std::vector<T> that will store the parameter.
+ * @throws std::runtime_error if the parameter is present but cannot be interpreted as the expected type or
+ *         if the parameter could not be retrieved.
  *
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, std::vector<T>& v)
