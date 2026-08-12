@@ -88,4 +88,16 @@ size_t ObjectClientManager::size() const
     return clients_.size();
 }
 
+bool ObjectClientManager::are_all_clients_enabled() const
+{
+    for (const auto& pair : clients_)
+    {
+        if (!pair.second->is_enabled())
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 }
