@@ -91,5 +91,7 @@ PYBIND11_MODULE(_sas_common, m) {
             .def("get_client_names", &OCM::get_client_names,
                  "Return a list of all managed client names.")
             .def("size", &OCM::size,
-                 "Return the number of managed clients.");
+                 "Return the number of managed clients.")
+            .def("are_all_clients_enabled", &OCM::are_all_clients_enabled,
+                 "Return True if every managed client is enabled (or if no clients exist).");
 }

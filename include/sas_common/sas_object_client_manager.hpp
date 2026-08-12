@@ -120,6 +120,14 @@ public:
      * @return size_t Number of clients currently managed.
      */
     size_t size() const;
+
+    /**
+     * @brief Check whether all managed clients are enabled.
+     *
+     * @return true if every managed client reports is_enabled() == true,
+     *         or if no clients are managed; false otherwise.
+     */
+    bool are_all_clients_enabled() const;
 };
 
 }
