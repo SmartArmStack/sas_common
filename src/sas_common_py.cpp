@@ -22,13 +22,16 @@
 #
 # ################################################################*/
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <rclcpp/rclcpp.hpp>
 
 #include <sas_common/sas_object_client.hpp>
+#include <sas_common/sas_object_client_manager.hpp>
 #include <sas_common/sas_simulator_client.hpp>
 
 namespace py = pybind11;
 using OC = sas::ObjectClient;
+using OCM = sas::ObjectClientManager;
 using SC = sas::SimulatorClient;
 
 PYBIND11_MODULE(_sas_common, m) {
@@ -65,4 +68,28 @@ PYBIND11_MODULE(_sas_common, m) {
             .def("is_enabled",&SC::is_enabled,"Returns true if the SimulatorClient is enabled.")
             .def("get_topic_prefix",&SC::get_topic_prefix,
                  "Return the topic/service prefix configured for this client.");
+
+    py::class_<OCM>(m, "ObjectClientManager")
+            .def(py::init<const std::shared_ptr<rclcpp::Node>&>(),
+                 py::arg("node"),
+                 "Construct an ObjectClientManager that manages multiple ObjectClient instances.")
+            .def("add_client", &OCM::add_client,
+                 py::arg("name"),
+                 "Add (or replace) an ObjectClient identified by name.")
+            .def("remove_client", &OCM::remove_client,
+                 py::arg("name"),
+                 "Remove an ObjectClient by name. Returns True if found and removed.")
+            .def("get_client", [](OCM& self, const std::string& name) -> OC& {
+                 return self.get_client(name);
+             },
+                 py::arg("name"),
+                 py::return_value_policy::reference_internal,
+                 "Return a reference to the managed ObjectClient named `name`.")
+            .def("has_client", &OCM::has_client,
+                 py::arg("name"),
+                 "Return True if a client with the given name exists.")
+            .def("get_client_names", &OCM::get_client_names,
+                 "Return a list of all managed client names.")
+            .def("size", &OCM::size,
+                 "Return the number of managed clients.");
 }
