@@ -31,6 +31,7 @@ find_package(sas_conversions REQUIRED)
 
 add_library(${PROJECT_NAME}
         src/sas_object_client.cpp
+        src/sas_object_client_manager.cpp
         src/sas_object_server.cpp
         src/sas_simulator_client.cpp
         src/sas_simulator_server.cpp
