@@ -12,4 +12,5 @@ services:
       && ros2 run sas_common sas_object_test_node
       && ros2 run sas_common sas_object_client_manager_test_node
       && ros2 run sas_common test_python_wrapper.py
+      && ros2 run sas_common test_object_client_manager_wrapper.py
       && ros2 run sas_common sas_simulator_test_node"
