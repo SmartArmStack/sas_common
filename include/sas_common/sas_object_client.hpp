@@ -82,7 +82,7 @@ public:
      *
      * @param pose The pose to send (DQ representation).
      */
-    void send_pose(const DQ& pose);
+    void send_pose(const DQ& pose) const;
 
     /**
      * @brief Get the last received pose.

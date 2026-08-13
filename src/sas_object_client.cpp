@@ -56,7 +56,7 @@ ObjectClient::ObjectClient(const std::shared_ptr<Node> &node,
                 );
 }
 
-void ObjectClient::send_pose(const DQ& pose)
+void ObjectClient::send_pose(const DQ& pose) const
 {
     publisher_pose_->publish(dq_to_geometry_msgs_pose_stamped(pose));
 }
