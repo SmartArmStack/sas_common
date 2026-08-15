@@ -7,3 +7,4 @@ RUN sudo apt-get update && sudo apt-get upgrade -y
 RUN python3 -m pip install --upgrade dqrobotics --break-system-packages
 RUN sudo sudo apt-get remove -y ros-jazzy-sas-common
 RUN mkdir -p /root/sas_common_devel/src/
+COPY . /root/sas_common_devel/src/sas_common
