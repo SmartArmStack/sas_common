@@ -224,6 +224,17 @@ install(DIRECTORY
 ######################
 
 #########################
+# Config Block [BEGIN] #
+# vvvvvvvvvvvvvvvvvvvvv #
+install(DIRECTORY
+        config
+        DESTINATION share/${PROJECT_NAME}/
+)
+# ^^^^^^^^^^^^^^^^^^^ #
+# Config Block [END] #
+#######################
+
+#########################
 # Scripts Block [BEGIN] #
 # vvvvvvvvvvvvvvvvvvvvv #
 # https://ros2-tutorial.readthedocs.io/en/latest/

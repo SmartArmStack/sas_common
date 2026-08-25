@@ -1,30 +1,45 @@
 """Launch file used to run the ros2 parameter test node for sas_common.
 
 This launch description starts the `sas_common_ros2_parameter_test_node` with
-pre-configured parameters used to exercise the special EMPTY_LIST handling for
-vector parameters.
+parameters loaded from a YAML configuration file. The parameters exercise the
+special EMPTY_LIST handling for vector parameters.
+
+Pass a different file with ``config_file:=/path/to/config.yaml``.
 """
 
+import os.path
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
+    """Launch the sas_common ROS2 parameter test node.
+
+    Parameters are loaded from a YAML configuration file. Pass a different
+    file with ``config_file:=/path/to/config.yaml``.
+    """
+    name = LaunchConfiguration('name')
+    config_file = LaunchConfiguration('config_file')
+
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'name',
+            default_value='sas_common_ros2_parameter_test'
+        ),
+        DeclareLaunchArgument(
+            'config_file',
+            default_value=os.path.join(get_package_share_directory('sas_common'), 'config', 'config.yaml')
+        ),
         Node(
             package='sas_common',
             executable='sas_common_ros2_parameter_test_node',
-            name='sas_common_ros2_parameter_test',
+            name=name,
             output='screen',
-            parameters=[{
-                "empty_string_vector": ["EMPTY_LIST"],
-                "empty_integer_vector":  ["EMPTY_LIST"],
-                "empty_double_vector":  ["EMPTY_LIST"],
-                "empty_bool_vector":  ["EMPTY_LIST"],
-                "string_vector": ["a","b","c","d","e","f"],
-                "integer_vector":  [1,2,3,4,5,6,7,8,9,10],
-                "double_vector":  [11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0,19.0,20.0],
-                "bool_vector":  [False,True,True,False,True,True,True,True,False,True,True,False,True,False,True,True],
-            }]
+            parameters=[config_file]
         )
     ])
 
