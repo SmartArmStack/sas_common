@@ -1,0 +1,67 @@
+# Parameters for the sas_common nodes.
+#
+# Each top-level block is keyed by the ROS node name and is loaded by the
+# corresponding launch file via its `config_file` argument.
+
+# sas_common_ros2_parameter_test (example/test node)
+#
+# Demonstrates the behaviour of `sas::get_ros_parameter`, including the
+# package-specific handling of empty lists encoded as `["EMPTY_LIST"]`.
+# All eight parameters are optional: an absent vector parameter defaults to an
+# empty list.
+sas_common_ros2_parameter_test:
+  ros__parameters:
+    empty_string_vector:
+    - EMPTY_LIST
+    empty_integer_vector:
+    - EMPTY_LIST
+    empty_double_vector:
+    - EMPTY_LIST
+    empty_bool_vector:
+    - EMPTY_LIST
+    string_vector:
+    - a
+    - b
+    - c
+    - d
+    - e
+    - f
+    integer_vector:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    double_vector:
+    - 11.0
+    - 12.0
+    - 13.0
+    - 14.0
+    - 15.0
+    - 16.0
+    - 17.0
+    - 18.0
+    - 19.0
+    - 20.0
+    bool_vector:
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - false
+    - true
+    - true
