@@ -35,7 +35,7 @@ using namespace std::placeholders;
 namespace sas
 {
 
-SimulatorServer::SimulatorServer(const std::shared_ptr<Node> &node,
+SimulatorServer::SimulatorServer(const std::shared_ptr<rclcpp::Node> &node,
                                  const std::string topic_prefix):
     sas::Object("sas::SimulatorServer"),
     node_(node),
