@@ -40,7 +40,7 @@ void ObjectClient::_callback_pose(const geometry_msgs::msg::PoseStamped& msg)
 }
 
 
-ObjectClient::ObjectClient(const std::shared_ptr<Node> &node,
+ObjectClient::ObjectClient(const std::shared_ptr<rclcpp::Node> &node,
                            const std::string topic_prefix):
     sas::Object("sas::ObjectClient"),
     node_(node),

@@ -33,7 +33,7 @@
 namespace sas
 {
 
-SimulatorClient::SimulatorClient(const std::shared_ptr<Node> &node,
+SimulatorClient::SimulatorClient(const std::shared_ptr<rclcpp::Node> &node,
                                  const std::string topic_prefix):
     sas::Object("sas::SimulatorClient"),
     node_(node),
