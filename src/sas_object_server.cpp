@@ -40,7 +40,7 @@ void ObjectServer::_callback_target_pose(const geometry_msgs::msg::PoseStamped& 
 }
 
 
-ObjectServer::ObjectServer(const std::shared_ptr<Node> &node,
+ObjectServer::ObjectServer(const std::shared_ptr<rclcpp::Node> &node,
                            const std::string topic_prefix):
     sas::Object("sas::ObjectServer"),
     node_(node),

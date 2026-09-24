@@ -34,7 +34,6 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <sas_core/sas_object.hpp>
 
-using namespace rclcpp;
 using namespace DQ_robotics;
 
 namespace sas
@@ -52,13 +51,13 @@ namespace sas
 class ObjectClient: private sas::Object
 {
 private:
-    std::shared_ptr<Node> node_;
+    std::shared_ptr<rclcpp::Node> node_;
 
     std::atomic_bool enabled_;
     std::string topic_prefix_;
 
-    Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr subscriber_pose_;
-    Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr publisher_pose_;
+    rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr subscriber_pose_;
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr publisher_pose_;
     DQ pose_;
 
     void _callback_pose(const geometry_msgs::msg::PoseStamped& msg);
@@ -72,7 +71,7 @@ public:
      * @param node Shared pointer to the rclcpp::Node used for ROS communications.
      * @param topic_prefix Topic prefix used for publisher/subscriber names. Defaults to "GET_FROM_NODE".
      */
-    ObjectClient(const std::shared_ptr<Node> &node,
+    ObjectClient(const std::shared_ptr<rclcpp::Node> &node,
                  const std::string topic_prefix="GET_FROM_NODE");
 
     /**

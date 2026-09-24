@@ -33,8 +33,6 @@
 #include <std_srvs/srv/trigger.hpp>
 #include <sas_core/sas_object.hpp>
 
-using namespace rclcpp;
-
 namespace sas
 {
 
@@ -49,13 +47,13 @@ namespace sas
 class SimulatorServer: private sas::Object
 {
 private:
-    std::shared_ptr<Node> node_;
+    std::shared_ptr<rclcpp::Node> node_;
 
     std::atomic_bool enabled_;
     std::string topic_prefix_;
 
-    std::shared_ptr<Service<std_srvs::srv::Trigger>> service_server_start_simulation_;
-    std::shared_ptr<Service<std_srvs::srv::Trigger>> service_server_stop_simulation_;
+    std::shared_ptr<rclcpp::Service<std_srvs::srv::Trigger>> service_server_start_simulation_;
+    std::shared_ptr<rclcpp::Service<std_srvs::srv::Trigger>> service_server_stop_simulation_;
 
     std::function<void()> start_simulation_callback_;
     void start_simulation_callback_ros_(
@@ -77,7 +75,7 @@ public:
      * @param node Shared pointer to the rclcpp::Node used for ROS communications.
      * @param topic_prefix Topic/service prefix used to build service names. Defaults to "GET_FROM_NODE".
      */
-    SimulatorServer(const std::shared_ptr<Node> &node,
+    SimulatorServer(const std::shared_ptr<rclcpp::Node> &node,
                     const std::string topic_prefix="GET_FROM_NODE");
 
     /**
