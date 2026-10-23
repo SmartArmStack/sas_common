@@ -12,7 +12,18 @@
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
   <depend>std_srvs</depend>
+  <depend>eigen</depend>
+  <depend>sas_core</depend>
   <depend>sas_conversions</depend>
+
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <!-- dqrobotics (C++ libdqrobotics and the `dqrobotics` Python bindings) has
+       no rosdep key; it comes from the DQ Robotics PPA and PyPI (see
+       https://github.com/marinholab/docker_recipes) and is pre-installed in
+       the devel image. -->
 
   <export>
     <build_type>ament_cmake</build_type>
