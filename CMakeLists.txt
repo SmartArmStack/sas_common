@@ -247,4 +247,19 @@ install(DIRECTORY
 # Scripts Block [END] #
 #######################
 
+#############################
+# Test Block [BEGIN] #
+if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_object_simulator_servers test/test_object_simulator_servers.cpp TIMEOUT 120)
+  target_link_libraries(test_object_simulator_servers ${PROJECT_NAME})
+  ament_target_dependencies(test_object_simulator_servers rclcpp geometry_msgs std_srvs)
+
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(test_object_simulator_clients test/test_object_simulator_clients.py TIMEOUT 120)
+endif()
+#   Test Block [END]   #
+#############################
+
+
 ament_package()
