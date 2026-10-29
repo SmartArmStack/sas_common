@@ -32,7 +32,16 @@ instantiates the ObjectClient and SimulatorClient wrappers.
 Run with: python3 test_python_wrapper.py
 """
 from dqrobotics import *
-from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClient, SimulatorClient
+
+from sas_common import (
+    ObjectClient,
+    SimulatorClient,
+    rclcpp_init,
+    rclcpp_Node,
+    rclcpp_shutdown,
+    rclcpp_spin_some,
+)
+
 
 def main():
     """Run a basic smoke-test using the Python bindings.

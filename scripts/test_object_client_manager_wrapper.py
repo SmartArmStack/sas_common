@@ -32,7 +32,15 @@ instantiates an ObjectClientManager, and exercises add/remove/get/list operation
 Run with: python3 test_object_client_manager_wrapper.py
 """
 from dqrobotics import *
-from sas_common import rclcpp_init, rclcpp_Node, rclcpp_spin_some, rclcpp_shutdown, ObjectClientManager
+
+from sas_common import (
+    ObjectClientManager,
+    rclcpp_init,
+    rclcpp_Node,
+    rclcpp_shutdown,
+    rclcpp_spin_some,
+)
+
 
 def main():
     """Run a basic smoke-test for the ObjectClientManager Python bindings."""
