@@ -27,14 +27,13 @@
 # - Added get_ros_optional_parameter
 */
 
-
 #include <type_traits>
 #include <rclcpp/rclcpp.hpp>
 
 namespace sas
 {
 
-template<typename T>
+template <typename T>
 /**
  * @brief get_ros_parameter a wrapper of Node->get_parameter to throw a descriptive exception if the parameter was not found.
  * @param node[in] the relevant rclcpp::Node.
@@ -44,16 +43,16 @@ template<typename T>
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t)
 {
-    if(!node->has_parameter(parameter_name))
+    if (!node->has_parameter(parameter_name))
         node->declare_parameter<T>(parameter_name);
 
-    if(!node->get_parameter(parameter_name,t))
+    if (!node->get_parameter(parameter_name, t))
     {
         throw std::runtime_error("::Error loading " + parameter_name);
     }
 }
 
-template<typename T>
+template <typename T>
 /**
  * @brief get_ros_optional_parameter a wrapper of Node->get_parameter with a default value that does not throw an exception if not found.
  * @param node[in] the relevant rclcpp::Node.
@@ -61,14 +60,15 @@ template<typename T>
  * @param t[out] the reference for the variable that will store the parameter.
  * @param default_value[in] the default value in case it's not found.
  */
-void get_ros_optional_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t, const T& default_value)
+void get_ros_optional_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, T& t,
+                                const T& default_value)
 {
-    if(!node->has_parameter(parameter_name))
+    if (!node->has_parameter(parameter_name))
         node->declare_parameter<T>(parameter_name, default_value);
-    node->get_parameter(parameter_name,t);
+    node->get_parameter(parameter_name, t);
 }
 
-template<typename T>
+template <typename T>
 /**
  * @brief get_type_name A slightly prettier version of "typeid(T).name()" for the types
  * currently in need in get_ros_parameter.
@@ -76,26 +76,26 @@ template<typename T>
  */
 std::string get_type_name(const std::vector<T>&)
 {
-    if constexpr(std::is_same_v<T,std::string>)
+    if constexpr (std::is_same_v<T, std::string>)
     {
         return "std::vector<std::string>";
     }
-    if constexpr(std::is_same_v<T,int64_t>)
+    if constexpr (std::is_same_v<T, int64_t>)
     {
         return "std::vector<int64_t>";
     }
-    if constexpr(std::is_same_v<T,double>)
+    if constexpr (std::is_same_v<T, double>)
     {
         return "std::vector<double>";
     }
-    if constexpr(std::is_same_v<T,bool>)
+    if constexpr (std::is_same_v<T, bool>)
     {
         return "std::vector<bool>";
     }
     return "";
 }
 
-template<typename T>
+template <typename T>
 /**
  * @brief get_ros_parameter a wrapper of Node->get_parameter to throw an exception of the parameter was not found.
  * This is a specialization for std::vector<T>, to consider empty sequences, because they are not handled in ROS2
@@ -113,7 +113,7 @@ template<typename T>
  */
 void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& parameter_name, std::vector<T>& v)
 {
-    if(!node->has_parameter(parameter_name))
+    if (!node->has_parameter(parameter_name))
     {
         try
         {
@@ -121,47 +121,39 @@ void get_ros_parameter(std::shared_ptr<rclcpp::Node>& node, const std::string& p
         }
         catch (const rclcpp::exceptions::InvalidParameterTypeException& e)
         {
-            RCLCPP_INFO_STREAM(
-                        node->get_logger(),
-                        "sas::get_ros_parameter: List "
-                        << parameter_name
-                        << " does not have expected type, a.k.a "
-                        << get_type_name(v)
-                        << ", in the parameter server, checking for empty list...");
+            RCLCPP_INFO_STREAM(node->get_logger(), "sas::get_ros_parameter: List "
+                                                       << parameter_name << " does not have expected type, a.k.a "
+                                                       << get_type_name(v)
+                                                       << ", in the parameter server, checking for empty list...");
             node->declare_parameter<std::vector<std::string>>(parameter_name);
         }
     }
 
-    if(node->get_parameter(parameter_name).get_type() == rclcpp::PARAMETER_STRING_ARRAY)
+    if (node->get_parameter(parameter_name).get_type() == rclcpp::PARAMETER_STRING_ARRAY)
     {
         auto v_checker = node->get_parameter(parameter_name).as_string_array();
-        if(v_checker.size() == 1 && v_checker.at(0) == "EMPTY_LIST")
+        if (v_checker.size() == 1 && v_checker.at(0) == "EMPTY_LIST")
         {
-            RCLCPP_INFO_STREAM(
-                        node->get_logger(),
-                        "sas::get_ros_parameter: List "
-                        << parameter_name
-                        << " was loaded as an EMPTY list of type "
-                        << get_type_name(v)
-                        << ".");
+            RCLCPP_INFO_STREAM(node->get_logger(), "sas::get_ros_parameter: List "
+                                                       << parameter_name << " was loaded as an EMPTY list of type "
+                                                       << get_type_name(v) << ".");
             v = std::vector<T>();
             return;
         }
         else
         {
-            if constexpr (not std::is_same_v<T,std::string>)
+            if constexpr (not std::is_same_v<T, std::string>)
             {
-                throw std::runtime_error("::Was this list, "
-                                         + parameter_name
-                                         + ", supposed to be empty? \n "
-                                           "It should be a list such as list:[\"EMPTY_LIST\"].");
+                throw std::runtime_error("::Was this list, " + parameter_name +
+                                         ", supposed to be empty? \n "
+                                         "It should be a list such as list:[\"EMPTY_LIST\"].");
             }
         }
     }
-    if(!node->get_parameter(parameter_name,v))
+    if (!node->get_parameter(parameter_name, v))
     {
         throw std::runtime_error("::Unable to get parameter " + parameter_name);
     }
 }
 
-}
+}  // namespace sas

@@ -25,23 +25,21 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sas_common/sas_object_client_manager.hpp>
 
-
-#include<signal.h>
+#include <signal.h>
 static std::atomic_bool kill_this_process(false);
 void sig_int_handler(int)
 {
     kill_this_process = true;
 }
 
-
 int main(int argc, char** argv)
 {
-    if(signal(SIGINT, sig_int_handler) == SIG_ERR)
+    if (signal(SIGINT, sig_int_handler) == SIG_ERR)
     {
         throw std::runtime_error("::Error setting the signal int handler.");
     }
 
-    rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
+    rclcpp::init(argc, argv, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_object_client_manager_test_node");
 
     try
@@ -55,21 +53,18 @@ int main(int argc, char** argv)
 
         for (const auto& name : manager.get_client_names())
         {
-            RCLCPP_INFO(node->get_logger(), "Client '%s' enabled: %s",
-                        name.c_str(),
+            RCLCPP_INFO(node->get_logger(), "Client '%s' enabled: %s", name.c_str(),
                         manager.get_client(name).is_enabled() ? "true" : "false");
         }
 
         manager.remove_client("laser");
         RCLCPP_INFO(node->get_logger(), "After removal, clients: %zu", manager.size());
-        RCLCPP_INFO(node->get_logger(), "Has 'imu': %s",
-                    manager.has_client("imu") ? "true" : "false");
+        RCLCPP_INFO(node->get_logger(), "Has 'imu': %s", manager.has_client("imu") ? "true" : "false");
     }
     catch (const std::exception& e)
     {
-        RCLCPP_ERROR_STREAM_ONCE(node->get_logger(),"::Exception::" << e.what());
+        RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), "::Exception::" << e.what());
     }
-
 
     return 0;
 }

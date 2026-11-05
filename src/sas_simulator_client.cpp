@@ -33,15 +33,15 @@
 namespace sas
 {
 
-SimulatorClient::SimulatorClient(const std::shared_ptr<rclcpp::Node> &node,
-                                 const std::string topic_prefix):
-    sas::Object("sas::SimulatorClient"),
-    node_(node),
-    topic_prefix_(topic_prefix == "GET_FROM_NODE"? node->get_name() : topic_prefix)
+SimulatorClient::SimulatorClient(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix)
+    : sas::Object("sas::SimulatorClient"),
+      node_(node),
+      topic_prefix_(topic_prefix == "GET_FROM_NODE" ? node->get_name() : topic_prefix)
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing SimulatorClient with prefix " + topic_prefix_);
+    RCLCPP_INFO_STREAM(node_->get_logger(), "::Initializing SimulatorClient with prefix " + topic_prefix_);
 
-    service_client_start_simulation_ = node_->create_client<std_srvs::srv::Trigger>(topic_prefix_ + "/start_simulation");
+    service_client_start_simulation_ =
+        node_->create_client<std_srvs::srv::Trigger>(topic_prefix_ + "/start_simulation");
     service_client_stop_simulation_ = node_->create_client<std_srvs::srv::Trigger>(topic_prefix_ + "/stop_simulation");
 }
 
@@ -62,7 +62,7 @@ bool SimulatorClient::stop_simulation()
 bool SimulatorClient::is_enabled() const
 {
     return (service_client_start_simulation_->service_is_ready() &&
-           service_client_stop_simulation_->service_is_ready());
+            service_client_stop_simulation_->service_is_ready());
 }
 
 std::string SimulatorClient::get_topic_prefix() const
@@ -70,5 +70,4 @@ std::string SimulatorClient::get_topic_prefix() const
     return topic_prefix_;
 }
 
-
-}
+}  // namespace sas

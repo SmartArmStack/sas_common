@@ -39,21 +39,18 @@ void ObjectServer::_callback_target_pose(const geometry_msgs::msg::PoseStamped& 
     target_pose_ = geometry_msgs_pose_stamped_to_dq(msg);
 }
 
-
-ObjectServer::ObjectServer(const std::shared_ptr<rclcpp::Node> &node,
-                           const std::string topic_prefix):
-    sas::Object("sas::ObjectServer"),
-    node_(node),
-    topic_prefix_(topic_prefix == "GET_FROM_NODE"? node->get_name() : topic_prefix),
-    target_pose_(0)
+ObjectServer::ObjectServer(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix)
+    : sas::Object("sas::ObjectServer"),
+      node_(node),
+      topic_prefix_(topic_prefix == "GET_FROM_NODE" ? node->get_name() : topic_prefix),
+      target_pose_(0)
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing ObjectServer with prefix " + topic_prefix_);
+    RCLCPP_INFO_STREAM(node_->get_logger(), "::Initializing ObjectServer with prefix " + topic_prefix_);
 
-    publisher_pose_ = node->create_publisher<geometry_msgs::msg::PoseStamped>(topic_prefix + "/get/pose",1);
+    publisher_pose_ = node->create_publisher<geometry_msgs::msg::PoseStamped>(topic_prefix + "/get/pose", 1);
 
     subscriber_pose_ = node->create_subscription<geometry_msgs::msg::PoseStamped>(
-                topic_prefix + "/set/pose", 1, std::bind(&ObjectServer::_callback_target_pose, this, _1)
-                );
+        topic_prefix + "/set/pose", 1, std::bind(&ObjectServer::_callback_target_pose, this, _1));
 }
 
 void ObjectServer::send_pose(const DQ& pose)
@@ -63,10 +60,11 @@ void ObjectServer::send_pose(const DQ& pose)
 
 DQ ObjectServer::get_target_pose() const
 {
-    if(is_enabled())
+    if (is_enabled())
         return target_pose_;
     else
-        throw std::runtime_error(topic_prefix_ + "::ObjectServer::get_target_pose()::trying to get pose but uninitialized.");
+        throw std::runtime_error(topic_prefix_ +
+                                 "::ObjectServer::get_target_pose()::trying to get pose but uninitialized.");
 }
 
 bool ObjectServer::is_enabled() const
@@ -79,5 +77,4 @@ std::string ObjectServer::get_topic_prefix() const
     return topic_prefix_;
 }
 
-
-}
+}  // namespace sas

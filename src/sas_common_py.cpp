@@ -34,64 +34,47 @@ using OC = sas::ObjectClient;
 using OCM = sas::ObjectClientManager;
 using SC = sas::SimulatorClient;
 
-PYBIND11_MODULE(_sas_common, m) {
+PYBIND11_MODULE(_sas_common, m)
+{
+    m.def("rclcpp_init", []() { rclcpp::init(0, nullptr, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None); });
+    m.def("rclcpp_shutdown", []() { rclcpp::shutdown(); });
+    m.def("rclcpp_spin_some", [](const rclcpp::Node::SharedPtr& node) { rclcpp::spin_some(node); });
 
-    m.def("rclcpp_init", [](){rclcpp::init(0,nullptr,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);});
-    m.def("rclcpp_shutdown", [](){rclcpp::shutdown();});
-    m.def("rclcpp_spin_some", [](const rclcpp::Node::SharedPtr& node){rclcpp::spin_some(node);});
-
-    py::class_<rclcpp::Node,std::shared_ptr<rclcpp::Node>>(m, "rclcpp_Node")
-            .def(py::init<const std::string&>());
+    py::class_<rclcpp::Node, std::shared_ptr<rclcpp::Node>>(m, "rclcpp_Node").def(py::init<const std::string&>());
 
     py::class_<OC>(m, "ObjectClient")
-            .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
-                 py::arg("node"),
-                 py::arg("topic_prefix") = "GET_FROM_NODE",
-                 "Construct an ObjectClient bound to the provided node and topic prefix.")
-            .def("send_pose",&OC::send_pose,
-                 "Publish the provided pose (DQ) to the configured topic.")
-            .def("get_pose",&OC::get_pose,
-                 "Return the last received pose (DQ). Raises RuntimeError if no pose has been received and the client is uninitialized.")
-            .def("is_enabled",&OC::is_enabled,"Returns true if the ObjectClient is enabled.")
-            .def("get_topic_prefix",&OC::get_topic_prefix,
-                 "Return the topic prefix configured for this client.");
+        .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(), py::arg("node"),
+             py::arg("topic_prefix") = "GET_FROM_NODE",
+             "Construct an ObjectClient bound to the provided node and topic prefix.")
+        .def("send_pose", &OC::send_pose, "Publish the provided pose (DQ) to the configured topic.")
+        .def("get_pose", &OC::get_pose,
+             "Return the last received pose (DQ). Raises RuntimeError if no pose has been received and the client is "
+             "uninitialized.")
+        .def("is_enabled", &OC::is_enabled, "Returns true if the ObjectClient is enabled.")
+        .def("get_topic_prefix", &OC::get_topic_prefix, "Return the topic prefix configured for this client.");
 
-     py::class_<SC>(m, "SimulatorClient")
-            .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(),
-                 py::arg("node"),
-                 py::arg("topic_prefix") = "GET_FROM_NODE",
-                 "Construct a SimulatorClient bound to the provided node and topic/service prefix.")
-            .def("start_simulation",&SC::start_simulation,
-                 "Call the start_simulation service; returns True on success.")
-            .def("stop_simulation",&SC::stop_simulation,
-                 "Call the stop_simulation service; returns True on success.")
-            .def("is_enabled",&SC::is_enabled,"Returns true if the SimulatorClient is enabled.")
-            .def("get_topic_prefix",&SC::get_topic_prefix,
-                 "Return the topic/service prefix configured for this client.");
+    py::class_<SC>(m, "SimulatorClient")
+        .def(py::init<const std::shared_ptr<rclcpp::Node>&, const std::string&>(), py::arg("node"),
+             py::arg("topic_prefix") = "GET_FROM_NODE",
+             "Construct a SimulatorClient bound to the provided node and topic/service prefix.")
+        .def("start_simulation", &SC::start_simulation, "Call the start_simulation service; returns True on success.")
+        .def("stop_simulation", &SC::stop_simulation, "Call the stop_simulation service; returns True on success.")
+        .def("is_enabled", &SC::is_enabled, "Returns true if the SimulatorClient is enabled.")
+        .def("get_topic_prefix", &SC::get_topic_prefix, "Return the topic/service prefix configured for this client.");
 
     py::class_<OCM>(m, "ObjectClientManager")
-            .def(py::init<const std::shared_ptr<rclcpp::Node>&>(),
-                 py::arg("node"),
-                 "Construct an ObjectClientManager that manages multiple ObjectClient instances.")
-            .def("add_client", &OCM::add_client,
-                 py::arg("name"),
-                 "Add (or replace) an ObjectClient identified by name.")
-            .def("remove_client", &OCM::remove_client,
-                 py::arg("name"),
-                 "Remove an ObjectClient by name. Returns True if found and removed.")
-            .def("get_client", [](OCM& self, const std::string& name) -> OC& {
-                 return self.get_client(name);
-             },
-                 py::arg("name"),
-                 py::return_value_policy::reference_internal,
-                 "Return a reference to the managed ObjectClient named `name`.")
-            .def("has_client", &OCM::has_client,
-                 py::arg("name"),
-                 "Return True if a client with the given name exists.")
-            .def("get_client_names", &OCM::get_client_names,
-                 "Return a list of all managed client names.")
-            .def("size", &OCM::size,
-                 "Return the number of managed clients.")
-            .def("are_all_clients_enabled", &OCM::are_all_clients_enabled,
-                 "Return True if every managed client is enabled (or if no clients exist).");
+        .def(py::init<const std::shared_ptr<rclcpp::Node>&>(), py::arg("node"),
+             "Construct an ObjectClientManager that manages multiple ObjectClient instances.")
+        .def("add_client", &OCM::add_client, py::arg("name"), "Add (or replace) an ObjectClient identified by name.")
+        .def("remove_client", &OCM::remove_client, py::arg("name"),
+             "Remove an ObjectClient by name. Returns True if found and removed.")
+        .def(
+            "get_client", [](OCM& self, const std::string& name) -> OC& { return self.get_client(name); },
+            py::arg("name"), py::return_value_policy::reference_internal,
+            "Return a reference to the managed ObjectClient named `name`.")
+        .def("has_client", &OCM::has_client, py::arg("name"), "Return True if a client with the given name exists.")
+        .def("get_client_names", &OCM::get_client_names, "Return a list of all managed client names.")
+        .def("size", &OCM::size, "Return the number of managed clients.")
+        .def("are_all_clients_enabled", &OCM::are_all_clients_enabled,
+             "Return True if every managed client is enabled (or if no clients exist).");
 }

@@ -27,23 +27,21 @@
 #include <sas_common/sas_simulator_client.hpp>
 #include <sas_common/sas_simulator_server.hpp>
 
-
-#include<signal.h>
+#include <signal.h>
 static std::atomic_bool kill_this_process(false);
 void sig_int_handler(int)
 {
     kill_this_process = true;
 }
 
-
 int main(int argc, char** argv)
 {
-    if(signal(SIGINT, sig_int_handler) == SIG_ERR)
+    if (signal(SIGINT, sig_int_handler) == SIG_ERR)
     {
         throw std::runtime_error("::Error setting the signal int handler.");
     }
 
-    rclcpp::init(argc,argv,rclcpp::InitOptions(),rclcpp::SignalHandlerOptions::None);
+    rclcpp::init(argc, argv, rclcpp::InitOptions(), rclcpp::SignalHandlerOptions::None);
     auto node = std::make_shared<rclcpp::Node>("sas_simulator_test_node");
     auto clock = sas::Clock(0.001);
 
@@ -51,26 +49,23 @@ int main(int argc, char** argv)
     {
         auto simulator_client = sas::SimulatorClient(node);
         auto simulator_server = sas::SimulatorServer(node);
-        auto f1 = [](){std::cout << "Start simulation called" << std::endl;};
-        auto f2 = [](){std::cout << "Stop simulation called" << std::endl;};
+        auto f1 = []() { std::cout << "Start simulation called" << std::endl; };
+        auto f2 = []() { std::cout << "Stop simulation called" << std::endl; };
         simulator_server.set_start_simulation_callback(f1);
         simulator_server.set_stop_simulation_callback(f2);
 
         clock.init();
-        while(!(simulator_client.is_enabled() &&
-                simulator_server.is_enabled()))
+        while (!(simulator_client.is_enabled() && simulator_server.is_enabled()))
         {
             clock.update_and_sleep();
         }
         simulator_client.start_simulation();
         simulator_client.stop_simulation();
-
     }
     catch (const std::exception& e)
     {
-        RCLCPP_ERROR_STREAM_ONCE(node->get_logger(),"::Exception::" << e.what());
+        RCLCPP_ERROR_STREAM_ONCE(node->get_logger(), "::Exception::" << e.what());
     }
-
 
     return 0;
 }

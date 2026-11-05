@@ -32,10 +32,7 @@
 namespace sas
 {
 
-ObjectClientManager::ObjectClientManager(const std::shared_ptr<rclcpp::Node>& node)
-    : node_(node)
-{
-}
+ObjectClientManager::ObjectClientManager(const std::shared_ptr<rclcpp::Node>& node) : node_(node) {}
 
 void ObjectClientManager::add_client(const std::string& name)
 {
@@ -100,4 +97,4 @@ bool ObjectClientManager::are_all_clients_enabled() const
     return true;
 }
 
-}
+}  // namespace sas

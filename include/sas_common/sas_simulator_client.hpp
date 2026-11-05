@@ -42,7 +42,7 @@ namespace sas
  * simulation services (std_srvs::srv::Trigger) and to query configuration
  * such as whether the client is enabled and the topic/service prefix.
  */
-class SimulatorClient: private sas::Object
+class SimulatorClient : private sas::Object
 {
 private:
     std::shared_ptr<rclcpp::Node> node_;
@@ -63,8 +63,7 @@ public:
      * @param node Shared pointer to the rclcpp::Node used for ROS communications.
      * @param topic_prefix Topic/service prefix used to build service names. Defaults to "GET_FROM_NODE".
      */
-    SimulatorClient(const std::shared_ptr<rclcpp::Node> &node,
-                    const std::string topic_prefix="GET_FROM_NODE");
+    SimulatorClient(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix = "GET_FROM_NODE");
 
     /**
      * @brief Call the start simulation service.
@@ -101,4 +100,4 @@ public:
     std::string get_topic_prefix() const;
 };
 
-}
+}  // namespace sas

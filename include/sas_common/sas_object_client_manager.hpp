@@ -130,4 +130,4 @@ public:
     bool are_all_clients_enabled() const;
 };
 
-}
+}  // namespace sas

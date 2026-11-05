@@ -44,7 +44,7 @@ namespace sas
  * will be executed when the corresponding service is invoked. The class also
  * exposes query methods for enabled state and topic/service prefix.
  */
-class SimulatorServer: private sas::Object
+class SimulatorServer : private sas::Object
 {
 private:
     std::shared_ptr<rclcpp::Node> node_;
@@ -56,14 +56,12 @@ private:
     std::shared_ptr<rclcpp::Service<std_srvs::srv::Trigger>> service_server_stop_simulation_;
 
     std::function<void()> start_simulation_callback_;
-    void start_simulation_callback_ros_(
-          const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response>);
+    void start_simulation_callback_ros_(const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+                                        std::shared_ptr<std_srvs::srv::Trigger::Response>);
 
     std::function<void()> stop_simulation_callback_;
-    void stop_simulation_callback_ros_(
-          const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response>);
+    void stop_simulation_callback_ros_(const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+                                       std::shared_ptr<std_srvs::srv::Trigger::Response>);
 
 public:
     SimulatorServer() = delete;
@@ -75,8 +73,7 @@ public:
      * @param node Shared pointer to the rclcpp::Node used for ROS communications.
      * @param topic_prefix Topic/service prefix used to build service names. Defaults to "GET_FROM_NODE".
      */
-    SimulatorServer(const std::shared_ptr<rclcpp::Node> &node,
-                    const std::string topic_prefix="GET_FROM_NODE");
+    SimulatorServer(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix = "GET_FROM_NODE");
 
     /**
      * @brief Register a callback executed when the start service is called.
@@ -107,4 +104,4 @@ public:
     std::string get_topic_prefix() const;
 };
 
-}
+}  // namespace sas

@@ -48,7 +48,7 @@ namespace sas
  * methods to send the current pose, retrieve the target pose and query configuration
  * such as the topic prefix and enabled state.
  */
-class ObjectServer: private sas::Object
+class ObjectServer : private sas::Object
 {
 private:
     std::shared_ptr<rclcpp::Node> node_;
@@ -61,6 +61,7 @@ private:
     DQ target_pose_;
 
     void _callback_target_pose(const geometry_msgs::msg::PoseStamped& msg);
+
 public:
     ObjectServer() = delete;
     ObjectServer(const ObjectServer&) = delete;
@@ -71,8 +72,7 @@ public:
      * @param node Shared pointer to the rclcpp::Node used for ROS communications.
      * @param topic_prefix Topic prefix used for publisher/subscriber names. Defaults to "GET_FROM_NODE".
      */
-    ObjectServer(const std::shared_ptr<rclcpp::Node> &node,
-                 const std::string topic_prefix="GET_FROM_NODE");
+    ObjectServer(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix = "GET_FROM_NODE");
 
     /**
      * @brief Publish the provided pose to the configured topic.
@@ -104,4 +104,4 @@ public:
     std::string get_topic_prefix() const;
 };
 
-}
+}  // namespace sas

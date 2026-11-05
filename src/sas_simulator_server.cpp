@@ -35,47 +35,33 @@ using namespace std::placeholders;
 namespace sas
 {
 
-SimulatorServer::SimulatorServer(const std::shared_ptr<rclcpp::Node> &node,
-                                 const std::string topic_prefix):
-    sas::Object("sas::SimulatorServer"),
-    node_(node),
-    topic_prefix_(topic_prefix == "GET_FROM_NODE"? node->get_name() : topic_prefix)
+SimulatorServer::SimulatorServer(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix)
+    : sas::Object("sas::SimulatorServer"),
+      node_(node),
+      topic_prefix_(topic_prefix == "GET_FROM_NODE" ? node->get_name() : topic_prefix)
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing SimulatorServer with prefix " + topic_prefix_);
+    RCLCPP_INFO_STREAM(node_->get_logger(), "::Initializing SimulatorServer with prefix " + topic_prefix_);
 
     service_server_start_simulation_ = node_->create_service<std_srvs::srv::Trigger>(
-        topic_prefix_ + "/start_simulation",
-        std::bind(&SimulatorServer::start_simulation_callback_ros_,
-        this,
-        _1,
-        _2)
-        );
+        topic_prefix_ + "/start_simulation", std::bind(&SimulatorServer::start_simulation_callback_ros_, this, _1, _2));
 
     service_server_stop_simulation_ = node_->create_service<std_srvs::srv::Trigger>(
-        topic_prefix_ + "/stop_simulation",
-        std::bind(&SimulatorServer::stop_simulation_callback_ros_,
-        this,
-        _1,
-        _2)
-        );
-
+        topic_prefix_ + "/stop_simulation", std::bind(&SimulatorServer::stop_simulation_callback_ros_, this, _1, _2));
 }
 
-void SimulatorServer::start_simulation_callback_ros_(
-          const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
+void SimulatorServer::start_simulation_callback_ros_(const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+                                                     std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
 {
-    if(!is_enabled())
+    if (!is_enabled())
         return;
     start_simulation_callback_();
     resp->success = true;
 }
 
-void SimulatorServer::stop_simulation_callback_ros_(
-          const std::shared_ptr<std_srvs::srv::Trigger::Request>,
-          std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
+void SimulatorServer::stop_simulation_callback_ros_(const std::shared_ptr<std_srvs::srv::Trigger::Request>,
+                                                    std::shared_ptr<std_srvs::srv::Trigger::Response> resp)
 {
-    if(!is_enabled())
+    if (!is_enabled())
         return;
     stop_simulation_callback_();
     resp->success = true;
@@ -92,8 +78,7 @@ void SimulatorServer::set_stop_simulation_callback(const std::function<void()>& 
 
 bool SimulatorServer::is_enabled() const
 {
-    return !(start_simulation_callback_ == nullptr ||
-             stop_simulation_callback_ == nullptr);
+    return !(start_simulation_callback_ == nullptr || stop_simulation_callback_ == nullptr);
 }
 
 std::string SimulatorServer::get_topic_prefix() const
@@ -101,5 +86,4 @@ std::string SimulatorServer::get_topic_prefix() const
     return topic_prefix_;
 }
 
-
-}
+}  // namespace sas

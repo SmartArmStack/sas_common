@@ -39,21 +39,18 @@ void ObjectClient::_callback_pose(const geometry_msgs::msg::PoseStamped& msg)
     pose_ = geometry_msgs_pose_stamped_to_dq(msg);
 }
 
-
-ObjectClient::ObjectClient(const std::shared_ptr<rclcpp::Node> &node,
-                           const std::string topic_prefix):
-    sas::Object("sas::ObjectClient"),
-    node_(node),
-    topic_prefix_(topic_prefix == "GET_FROM_NODE"? node->get_name() : topic_prefix),
-    pose_(0)
+ObjectClient::ObjectClient(const std::shared_ptr<rclcpp::Node>& node, const std::string topic_prefix)
+    : sas::Object("sas::ObjectClient"),
+      node_(node),
+      topic_prefix_(topic_prefix == "GET_FROM_NODE" ? node->get_name() : topic_prefix),
+      pose_(0)
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(),"::Initializing ObjectClient with prefix " + topic_prefix_);
+    RCLCPP_INFO_STREAM(node_->get_logger(), "::Initializing ObjectClient with prefix " + topic_prefix_);
 
-    publisher_pose_ = node->create_publisher<geometry_msgs::msg::PoseStamped>(topic_prefix + "/set/pose",1);
+    publisher_pose_ = node->create_publisher<geometry_msgs::msg::PoseStamped>(topic_prefix + "/set/pose", 1);
 
     subscriber_pose_ = node->create_subscription<geometry_msgs::msg::PoseStamped>(
-                topic_prefix + "/get/pose", 1, std::bind(&ObjectClient::_callback_pose, this, _1)
-                );
+        topic_prefix + "/get/pose", 1, std::bind(&ObjectClient::_callback_pose, this, _1));
 }
 
 void ObjectClient::send_pose(const DQ& pose) const
@@ -63,7 +60,7 @@ void ObjectClient::send_pose(const DQ& pose) const
 
 DQ ObjectClient::get_pose() const
 {
-    if(is_enabled())
+    if (is_enabled())
         return pose_;
     else
         throw std::runtime_error(topic_prefix_ + "::ObjectClient::get_pose()::trying to get pose but uninitialized.");
@@ -79,5 +76,4 @@ std::string ObjectClient::get_topic_prefix() const
     return topic_prefix_;
 }
 
-
-}
+}  // namespace sas
